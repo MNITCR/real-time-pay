@@ -2,7 +2,6 @@
 
 require 'function.php';
 
-
 // Get the path without the query string
 $uri = parse_url($_SERVER["REQUEST_URI"])['path'];
 

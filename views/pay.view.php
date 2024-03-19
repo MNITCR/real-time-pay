@@ -1,7 +1,7 @@
 <!-- Change title page -->
 <?php $title = "Sing in";?>
 
-<?php require("Test/views/components/head.components.php") ?>
+<?php require("views/components/head.components.php") ?>
 
     <div class="dark:bg-slate-800 flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 h-[100vh]">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -56,4 +56,4 @@
 
 
 
-<?php require("Test/views/components/footer.components.php") ?>
+<?php require("views/components/footer.components.php") ?>
