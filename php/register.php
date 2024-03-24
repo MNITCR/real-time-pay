@@ -81,12 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         //     }
         // }
 
-        // if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-        //     echo "The file " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
-        // } else {
-        //     echo "Sorry, there was an error uploading your file.";
-        // }
-
         // Validate form data (perform server-side validation)
         if ($firstName === "" || $lastName === "" || $password === "" || $email === "" || $phone === "") {
             echo "Please enter all required fields";
@@ -100,11 +94,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
             if (!$user) {
+                // Generate account numbers using time and random number
+                $timestamp = time();
+                $random_eg = mt_rand(191387, 906254);
+                $random_kh = rand(243195, 942157);
+                $account_number_eg = substr($timestamp, -6, 3) . $random_eg;
+                $account_number_kh = $random_kh . substr($timestamp, -3, 3);
+
                 // Insert user data into the database
                 $stmt = $conn->prepare("INSERT INTO user_tbl (first_name, last_name, phone, email, password, image_path, created_at, token, tokenExp, qrcode) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)");
                 $stmt->execute([$firstName, $lastName, $phone, $email, $hashedPassword, $targetFile, $token, $tokenExp, $qrCodeUrl]);
 
                 if ($stmt) {
+                    // Retrieve the last inserted user_id
+                    $user_id = $conn->lastInsertId();
+
+                    $stmt = $conn->prepare("INSERT INTO account_tbl (user_id, account_number_eg, account_number_kh, created_at) VALUES (?, ?, ?, NOW())");
+                    $stmt->execute([$user_id, $account_number_eg, $account_number_kh]);
                     $_SESSION["token"] = $token;
                     echo "success";
                 } else {

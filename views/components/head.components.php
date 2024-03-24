@@ -15,6 +15,7 @@
     <!-- Include QRious library -->
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
     <style>
         /* Vertical scrollbar */
         ::-webkit-scrollbar {

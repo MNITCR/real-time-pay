@@ -11,14 +11,14 @@ $(document).ready(function () {
         var qrcode = response;
         var decodedJsonData = decodeURIComponent(qrcode);
         var jsonData = JSON.parse(decodedJsonData);
-        console.log(jsonData);
+        // console.log(jsonData);
 
         // Convert JSON data to string
         var jsonString = JSON.stringify(jsonData);
 
         // Create QR code
         var qr = new QRious({
-          element: document.getElementById("image-qr-code"),
+          element: document.getElementById("image-qr-code-profile"),
           value: jsonString,
           size: 250, // Adjust the size of the QR code as needed
         });

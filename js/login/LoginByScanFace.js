@@ -121,7 +121,7 @@ function sendDataToPHP(userName) {
         document.getElementById("result").innerText = response.message;
         setTimeout(function () {
           location.replace("login");
-        }, 2000);
+        }, 4000);
       }
     } else {
       console.error("Error:", xhr.statusText);
