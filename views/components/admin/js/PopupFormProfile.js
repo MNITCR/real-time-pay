@@ -37,7 +37,8 @@ $(document).ready(function () {
 
   // Function to trigger download of QR code image
   $("#download_qrCode").click(function () {
-    var qrImageSrc = $("#image-qr-code").attr("src");
+    var qrImageSrc = $("#image-qr-code-profile").attr("src");
+    console.log(qrImageSrc);
     var link = document.createElement("a");
     link.href = qrImageSrc;
     link.download = "qr_code.png"; // Change the file name if needed

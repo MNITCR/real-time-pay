@@ -132,7 +132,7 @@
                         </div>
 
                         <!-- label qr code -->
-                        <label for="qrImage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your qr code</label>
+                        <label for="qrImage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">QR Code</label>
                         <!-- Show image qr-->
                         <div class="flex items-center justify-center w-full mb-6">
                             <label for="qrImage" class="hideLabel flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -152,7 +152,7 @@
 
                             <!-- button sing up -->
                             <button type="button" id="download_qrCode" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                Download qr code
+                                Download QR Code
                             </button>
                         </div>
                     </form>
