@@ -17,7 +17,7 @@
                 <button type="button" class="dropdown-toggle text-gray-400 hover:text-gray-600"><i class="ri-more-fill"></i></button>
                 <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[170px]">
                     <li>
-                        <p class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50 cursor-pointer" id="btn_hide_show_acc_eg">Hide Account Number</p>
+                        <p class="flex items-center text-[13px] py-1 px-4 text-gray-600 hover:text-cyan-500 cursor-pointer transition-all" id="btn_hide_show_acc_eg">Hide Account Number</p>
                     </li>
                 </ul>
             </div>
@@ -30,7 +30,7 @@
                 </svg>
                 Receive money
             </a>
-            <a href="/gebruikers" class="text-red-500 font-medium text-sm hover:text-red-700 flex items-center gap-2">
+            <a href="/real-time-pay/transfer" class="text-red-500 font-medium text-sm hover:text-red-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-[23px] border-2 border-red-600 rounded-full p-1 text-red-700 font-bold" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
                 </svg>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="flex gap-2 items-center">
                     <div class="text-[12px] font-medium text-gray-100 bg-emerald-500 rounded p-1.5 text-center">Savings Account</div>
-                    <div class="text-[15px] font-medium text-cyan-800 border-2 border-cyan-800 rounded p-[2.5px] px-2 text-center cursor-pointer" id="hide_show_account_number_kh" title="Double click copy"><span id="account_number_kh_balance"></span></div>
+                    <div class="text-[15px] font-medium text-emerald-500 border-2 border-emerald-500 rounded p-[2.5px] px-2 text-center cursor-pointer" id="hide_show_account_number_kh" title="Double click copy"><span id="account_number_kh_balance"></span></div>
                 </div>
 
             </div>
@@ -59,7 +59,7 @@
                 <button type="button" class="dropdown-toggle text-gray-400 hover:text-gray-600"><i class="ri-more-fill"></i></button>
                 <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[170px]">
                     <li>
-                        <p class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50 cursor-pointer" id="btn_hide_show_acc_kh">Hide Account Number</p>
+                        <p class="flex items-center text-[13px] py-1 px-4 text-gray-600 hover:text-emerald-500 cursor-pointer transition-all" id="btn_hide_show_acc_kh">Hide Account Number</p>
                     </li>
                 </ul>
             </div>

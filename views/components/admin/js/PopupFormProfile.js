@@ -11,7 +11,6 @@ $(document).ready(function () {
         var qrcode = response;
         var decodedJsonData = decodeURIComponent(qrcode);
         var jsonData = JSON.parse(decodedJsonData);
-        // console.log(jsonData);
 
         // Convert JSON data to string
         var jsonString = JSON.stringify(jsonData);
@@ -41,7 +40,7 @@ $(document).ready(function () {
     console.log(qrImageSrc);
     var link = document.createElement("a");
     link.href = qrImageSrc;
-    link.download = "qr_code.png"; // Change the file name if needed
+    link.download = "qr_code.png";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
