@@ -3,9 +3,10 @@
 if ($_SERVER["REQUEST_URI"] === "/real-time-pay/") {
     $title = "Dashboard";
 }
-if ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer") {
+if ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer" || "/real-time-pay/transfer?selected_kh=selected") {
     $title = "Transfer";
 }
+
 if (!session_id()) {
     session_start();
 }
@@ -261,20 +262,39 @@ if ($_SESSION['logged_in'] != true) {
     <!-- Content -->
     <div class="p-6">
         <?php
+        // Home page content
         if ($_SERVER["REQUEST_URI"] === "/real-time-pay/") {
             include_once 'components/admin/views/balance.view.php';
             include_once 'components/admin/views/history.view.php';
         }
-        ?>
+        // Home page content
 
 
-        <!-- payment form -->
-        <?php
-        if ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer") {
+        // payment form
+        elseif ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer") {
             include_once 'components/admin/views/payment.view.php';
         }
+        // end payment form
+
+
+        // payment form select khmer balance
+        elseif ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer?selected_kh=selected") {
+            include_once 'components/admin/views/payment.view.php';
+        }
+        // end payment form select khmer balance
+
+
+        // Page not found
+        else{
+            include_once '404.view.php';
+        }
+        // End page not found
+
         ?>
-        <!-- end payment form -->
+
+
+
+
     </div>
     <!-- End Content -->
 

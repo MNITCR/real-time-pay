@@ -142,6 +142,8 @@ $(document).ready(function () {
         );
 
         if (AccNumBalance.length > 0) {
+          // Get the URL parameters
+          const urlParams = new URLSearchParams(window.location.search);
           var AccNumBL =
             '<label for="balance" class="dark:text-gray-900 block text-sm font-medium leading-6 text-gray-900">Choose Balance</label>';
           AccNumBL += '<div class="mt-2">';
@@ -150,7 +152,7 @@ $(document).ready(function () {
           AccNumBL +=
             '<option value="' +
             AccNumBalance[0]["balance_eg"] +
-            '" data-payment="true">' +
+            '" data-payment="true"' + (urlParams.has('selected_kh') ? '' : 'selected') +'>' +
             AccNumBalance[0]["account_number_eg"] +
             " : $ " +
             AccNumBalance[0]["balance_eg"] +
@@ -158,7 +160,8 @@ $(document).ready(function () {
           AccNumBL +=
             '<option value="' +
             AccNumBalance[0]["balance_kh"] +
-            '" data-payment="false">' +
+            '" data-payment="false"' +
+            (urlParams.has('selected_kh') ? 'selected' : '') + '>' +
             AccNumBalance[0]["account_number_kh"] +
             " : ៛ " +
             AccNumBalance[0]["balance_kh"] +

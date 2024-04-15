@@ -37,7 +37,6 @@
                 Send money
             </a>
         </div>
-
     </div>
     <!-- end balance english -->
 
@@ -72,7 +71,7 @@
                 </svg>
                 Receive money
             </a>
-            <a href="/gebruikers" class="text-red-500 font-medium text-sm hover:text-red-700 flex items-center gap-2">
+            <a href="/real-time-pay/transfer?selected_kh=selected" class="text-red-500 font-medium text-sm hover:text-red-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-[23px] border-2 border-red-600 rounded-full p-1 text-red-700 font-bold" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
                 </svg>
@@ -123,6 +122,7 @@
 
 <script>
     $(document).ready(function() {
+
         // ==========> Copy Text <==========
 
         // Function to handle double-click on balance elements

@@ -1,18 +1,12 @@
 <?php
-require_once "./conn.php";
-session_start();
+    require_once "./conn.php";
+    session_start();
 
-// Fetch data from the database
-$stmt = $conn->prepare("SELECT user_id, balance_r_d, sender, receiver, amount, description, status FROM payment_tbl WHERE user_id = ? LIMIT 7");
-$stmt->execute([$_SESSION["user_id"]]);
+    // Fetch all data
+    $stmt = $conn->prepare("SELECT user_id, balance_r_d, sender, receiver, amount, description, status,payment_date FROM payment_tbl WHERE user_id = ?");
+    $stmt->execute([$_SESSION["user_id"]]);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch all rows
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// Calculate total pages
-$totalRows = count($rows);
-$rowsPerPage = 7; // Adjust as needed
-$totalPages = ceil($totalRows / $rowsPerPage);
-
-// Return the data as JSON
-header('Content-Type: application/json');
-echo json_encode($rows);
+    // Return all data as JSON
+    header('Content-Type: application/json');
+    echo json_encode($rows);

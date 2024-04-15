@@ -31,49 +31,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sender = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($sender) {
-                // Determine sender's and receiver's balance columns
-                $senderBalanceColumn = ($checkBalance === 'true') ? 'balance_eg' : 'balance_kh';
-                $receiverBalanceColumn = ($receiver['account_number_eg'] == $accountNumber) ? 'balance_eg' : 'balance_kh';
+                //Check if the user input account number matches the selected balance currency
+                if (($receiver["account_number_eg"] == $accountNumber && $checkBalance === 'false' ) || ($receiver["account_number_kh"] == $accountNumber && $checkBalance === 'true' )) {
+                    $response["message"] = "Account number currency does not match selected balance currency.";
+                }
+                else {
+                    // Determine sender's and receiver's balance columns
+                    $senderBalanceColumn = ($checkBalance === 'true') ? 'balance_eg' : 'balance_kh';
+                    $receiverBalanceColumn = ($receiver['account_number_eg'] == $accountNumber) ? 'balance_eg' : 'balance_kh';
 
-                // Check if sender's balance is sufficient
-                $updatedBalanceSender = $sender[$senderBalanceColumn] - $amount;
+                    // Check if sender's balance is sufficient
+                    $updatedBalanceSender = $sender[$senderBalanceColumn] - $amount;
 
-                // echo $senderBalanceColumn;
-                if ($updatedBalanceSender >= 0) {
-                    // Update sender's balance
-                    $updateStmtSender = $conn->prepare("UPDATE account_tbl SET $senderBalanceColumn = ? WHERE user_id = ?");
-                    $updateStmtSender->execute([$updatedBalanceSender, $user_id]);
+                    // echo $senderBalanceColumn;
+                    if ($updatedBalanceSender >= 0) {
+                        // Update sender's balance
+                        $updateStmtSender = $conn->prepare("UPDATE account_tbl SET $senderBalanceColumn = ? WHERE user_id = ?");
+                        $updateStmtSender->execute([$updatedBalanceSender, $user_id]);
 
-                    // Get sender's full name
-                    $senderNameStmt = $conn->prepare("SELECT first_name, last_name FROM user_tbl WHERE user_id = ?");
-                    $senderNameStmt->execute([$user_id]);
-                    $senderName = $senderNameStmt->fetch(PDO::FETCH_ASSOC);
-                    $senderFullName = $senderName['first_name'] . ' ' . $senderName['last_name'];
+                        // Get sender's full name
+                        $senderNameStmt = $conn->prepare("SELECT first_name, last_name FROM user_tbl WHERE user_id = ?");
+                        $senderNameStmt->execute([$user_id]);
+                        $senderName = $senderNameStmt->fetch(PDO::FETCH_ASSOC);
+                        $senderFullName = $senderName['first_name'] . ' ' . $senderName['last_name'];
 
-                    // Get receiver's full name
-                    $receiverNameStmt = $conn->prepare("SELECT first_name, last_name FROM user_tbl WHERE user_id = ?");
-                    $receiverNameStmt->execute([$receiver["user_id"]]);
-                    $receiverName = $receiverNameStmt->fetch(PDO::FETCH_ASSOC);
-                    $receiverFullName = $receiverName['first_name'] . ' ' . $receiverName['last_name'];
+                        // Get receiver's full name
+                        $receiverNameStmt = $conn->prepare("SELECT first_name, last_name FROM user_tbl WHERE user_id = ?");
+                        $receiverNameStmt->execute([$receiver["user_id"]]);
+                        $receiverName = $receiverNameStmt->fetch(PDO::FETCH_ASSOC);
+                        $receiverFullName = $receiverName['first_name'] . ' ' . $receiverName['last_name'];
 
-                    // Update receiver's balance
-                    $updatedBalanceReceiver = $receiver[$receiverBalanceColumn] + $amount;
-                    $updateStmtReceiver = $conn->prepare("UPDATE account_tbl SET $receiverBalanceColumn = ? WHERE account_number_eg = ? OR account_number_kh = ?");
-                    $updateStmtReceiver->execute([$updatedBalanceReceiver, $accountNumber, $accountNumber]);
+                        // Update receiver's balance
+                        $updatedBalanceReceiver = $receiver[$receiverBalanceColumn] + $amount;
+                        $updateStmtReceiver = $conn->prepare("UPDATE account_tbl SET $receiverBalanceColumn = ? WHERE account_number_eg = ? OR account_number_kh = ?");
+                        $updateStmtReceiver->execute([$updatedBalanceReceiver, $accountNumber, $accountNumber]);
 
-                    // Insert data to history table
-                    $historyStmt = $conn->prepare("INSERT INTO history_accnum_tbl (user_id, account_number, user_name, history_accNum_date, created_at) VALUES (?, ?, ?, NOW(), NOW())");
-                    $historyStmt->execute([$user_id, $accountNumber, $receiverFullName]);
-                    $lastInsertedHistoryId = $conn->lastInsertId(); // Get the last inserted ID
+                        // Insert data to history table
+                        $historyStmt = $conn->prepare("INSERT INTO history_accnum_tbl (user_id, account_number, user_name, history_accNum_date, created_at) VALUES (?, ?, ?, NOW(), NOW())");
+                        $historyStmt->execute([$user_id, $accountNumber, $receiverFullName]);
+                        $lastInsertedHistoryId = $conn->lastInsertId(); // Get the last inserted ID
 
-                    // Insert data to payment table
-                    $status = "success"; // Assuming payment is successful
-                    $paymentStmt = $conn->prepare("INSERT INTO payment_tbl (user_id, account_id, sender, receiver, account_number, description, amount, payment_date, status, balance_r_d) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)");
-                    $paymentStmt->execute([$user_id, $lastInsertedHistoryId, $senderFullName, $receiverFullName, $accountNumber, $description, $amount, $status, $senderBalanceColumn]);
+                        // Insert data to payment table
+                        $status = "success"; // Assuming payment is successful
+                        $paymentStmt = $conn->prepare("INSERT INTO payment_tbl (user_id, account_id, sender, receiver, account_number, description, amount, payment_date, status, balance_r_d) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)");
+                        $paymentStmt->execute([$user_id, $lastInsertedHistoryId, $senderFullName, $receiverFullName, $accountNumber, $description, $amount, $status, $senderBalanceColumn]);
 
-                    $response["message"] = "Payment submitted successfully.";
-                } else {
-                    $response["message"] = "Insufficient balance.";
+                        $response["message"] = "Payment submitted successfully.";
+                    } else {
+                        $response["message"] = "Insufficient balance.";
+                    }
                 }
             } else {
                 $response["message"] = "Invalid sender account.";

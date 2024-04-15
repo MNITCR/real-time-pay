@@ -2,7 +2,7 @@
     <div class="relative dark:bg-white flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 h-[85vh]">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="w-full items-center justify-center flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-[50px] bg-green-600 text-white rounded-full p-3" viewBox="0 0 24 24" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-[50px] bg-red-500 text-white rounded-full p-3" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M16.0503 12.0498L21 16.9996L16.0503 21.9493L14.636 20.5351L17.172 17.9988L4 17.9996V15.9996L17.172 15.9988L14.636 13.464L16.0503 12.0498ZM7.94975 2.0498L9.36396 3.46402L6.828 5.9988L20 5.99955V7.99955L6.828 7.9988L9.36396 10.5351L7.94975 11.9493L3 6.99955L7.94975 2.0498Z"></path>
                 </svg>
             </div>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="absolute right-[10px] top-[9px]">
                                 <button type="button" id="history-account">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                    <svg class="opacity-75 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
                                         <path d="M3 4.99509C3 3.89323 3.89262 3 4.99509 3H19.0049C20.1068 3 21 3.89262 21 4.99509V19.0049C21 20.1068 20.1074 21 19.0049 21H4.99509C3.89323 21 3 20.1074 3 19.0049V4.99509ZM5 5V19H19V5H5ZM7.97216 18.1808C7.35347 17.9129 6.76719 17.5843 6.22083 17.2024C7.46773 15.2753 9.63602 14 12.1022 14C14.5015 14 16.6189 15.2071 17.8801 17.0472C17.3438 17.4436 16.7664 17.7877 16.1555 18.0718C15.2472 16.8166 13.77 16 12.1022 16C10.3865 16 8.87271 16.8641 7.97216 18.1808ZM12 13C10.067 13 8.5 11.433 8.5 9.5C8.5 7.567 10.067 6 12 6C13.933 6 15.5 7.567 15.5 9.5C15.5 11.433 13.933 13 12 13ZM12 11C12.8284 11 13.5 10.3284 13.5 9.5C13.5 8.67157 12.8284 8 12 8C11.1716 8 10.5 8.67157 10.5 9.5C10.5 10.3284 11.1716 11 12 11Z"></path>
                                     </svg>
                                 </button>
@@ -68,7 +68,7 @@
                         <button type="submit" id="submitTransferMoney" style="background-color: #2568EB;hover{background-color: #4F46E4;}" class="cursor-pointer flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
                     </div>
                     <div class="w-full">
-                        <a href="./" class="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Back</a>
+                        <a href="./" class="flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Back</a>
                     </div>
                 </div>
             </form>
@@ -82,6 +82,7 @@
 
 <script>
     function reloadTableData() {
+
         $.ajax({
             type: "GET",
             url: "./php/FetchAccNumAndBalance.php",
@@ -92,8 +93,13 @@
                     var AccNumBL = '<label for="balance" class="dark:text-gray-900 block text-sm font-medium leading-6 text-gray-900">Choose Balance</label>';
                     AccNumBL += '<div class="mt-2">'
                     AccNumBL += '<select id="balance" name="balance" required class="px-2 block w-full rounded-md py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 border-2 placeholder:text-gray-400 sm:text-sm sm:leading-6">';
-                    AccNumBL += '<option value="' + AccNumBalance[0]['balance_eg'] + '" data-payment="true">' + AccNumBalance[0]['account_number_eg'] + ' : $ ' + AccNumBalance[0]['balance_eg'] + '</option>';
-                    AccNumBL += '<option value="' + AccNumBalance[0]['balance_kh'] + '" data-payment="false">' + AccNumBalance[0]['account_number_kh'] + ' : ៛ ' + AccNumBalance[0]['balance_kh'] + '</option>';
+
+                    // Get the URL parameters
+                    const urlParams = new URLSearchParams(window.location.search);
+
+                    AccNumBL += '<option value="' + AccNumBalance[0]['balance_eg'] + '" data-payment="true"' + (urlParams.has('selected_kh') ? '' : 'selected') +'>' + AccNumBalance[0]['account_number_eg'] + ' : $ ' + AccNumBalance[0]['balance_eg'] + '</option>';
+                    // AccNumBL += '<option value="' + AccNumBalance[0]['balance_kh'] + '" data-payment="false"' + ' : ៛ ' + AccNumBalance[0]['balance_kh'] + '</option>';
+                    AccNumBL += '<option value="' + AccNumBalance[0]['balance_kh'] + '" data-payment="false" ' + (urlParams.has('selected_kh') ? 'selected' : '') + '>' + AccNumBalance[0]['account_number_kh'] + ' : ៛ ' + AccNumBalance[0]['balance_kh'] + '</option>';
                     AccNumBL += '</select>';
                     AccNumBL += '</div>';
                     AccNumBL += '<p class="text-red-500 text-xs mt-1 balanceER" id="balanceER"></p>';
