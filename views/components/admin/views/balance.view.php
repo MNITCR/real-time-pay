@@ -24,7 +24,7 @@
         </div>
 
         <div class="flex items-center gap-10">
-            <a href="/gebruikers" class="font-medium text-sm text-green-500 hover:text-green-700 flex items-center gap-2">
+            <a href="#" id="PopUpQrEG" class="font-medium text-sm text-green-500 hover:text-green-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-[23px] border-2 border-green-600 rounded-full p-1 text-green-700 font-bold" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9 13.589L17.6066 4.98242L19.0208 6.39664L10.4142 15.0032H18V17.0032H7V6.00324H9V13.589Z"></path>
                 </svg>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="flex items-center gap-10">
-            <a href="/gebruikers" class="font-medium text-sm text-green-500 hover:text-green-700 flex items-center gap-2">
+            <a href="#" id="PopUpQrKH" data-type-money="UseOrKhr" class="font-medium text-sm text-green-500 hover:text-green-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-[23px] border-2 border-green-600 rounded-full p-1 text-green-700 font-bold" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9 13.589L17.6066 4.98242L19.0208 6.39664L10.4142 15.0032H18V17.0032H7V6.00324H9V13.589Z"></path>
                 </svg>

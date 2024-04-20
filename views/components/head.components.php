@@ -23,6 +23,7 @@
     <script src="./js/qrious-min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/qrious"></script> -->
     <script src="./js/qrious.js"></script>
+    <!-- for excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>

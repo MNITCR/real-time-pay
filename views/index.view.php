@@ -283,17 +283,61 @@ if ($_SESSION['logged_in'] != true) {
         }
         // end payment form select khmer balance
 
+        // scan payment by qr code
+        elseif ($dataParam = $_GET['data'] ?? null) {
+            $decodedData = json_decode(urldecode($dataParam), true);
+            $stmt = $conn->prepare("SELECT token,user_id FROM user_tbl WHERE token = ? AND user_id = ?");
+            $stmt->execute([$decodedData["token"], $decodedData["user_id"]]);
+            $user = $stmt->fetch();
+
+            if ($user) {
+                echo '
+                <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    $("#ScanQrDollar-modal").removeClass("hidden");
+                    var full_name_scan_user = "' . $decodedData["last_name"] . ' " + "' . $decodedData["first_name"] . '";
+                    $("#scan-qr-code-usd-khr").text(full_name_scan_user);
+                    var check_usd_or_khr = "'. $decodedData["sign_money"].'";
+                    $("#last_name_one_character").text("' . $decodedData["last_name"][0] . '");
+                    $("#first_name_one_character").text("' . $decodedData["first_name"][0] . '");
+
+
+                    if (check_usd_or_khr == "KHR"){
+                        $("#scan-qr-sign").text("KHR");
+                        $("#main-scan-qr-sign").text("KHR");
+                        $("#scan-qr-number-of-balance").text("' . $decodedData["balance_khr"] . '".replace(
+                            /(\d)(?=(\d{3})+(?!\d))/g,
+                            "$1 "
+                          ));
+                    } else {
+                        $("#main-scan-qr-sign").text("USD");
+                        $("#scan-qr-sign").text("USD");
+                        $("#scan-qr-number-of-balance").text("' . $decodedData["balance_usd"] . '".replace(
+                            /(\d)(?=(\d{3})+(?!\d))/g,
+                            "$1 "
+                          ));
+                    }
+                });
+                </script>';
+                include_once 'components/admin/views/balance.view.php';
+                include_once 'components/admin/views/history.view.php';
+            }
+            // Page not found
+            else {
+                include_once '404.view.php';
+            }
+            // End page not found
+        }
+        // scan payment by qr code
+
 
         // Page not found
-        else{
+        else {
             include_once '404.view.php';
         }
         // End page not found
 
         ?>
-
-
-
 
     </div>
     <!-- End Content -->
@@ -306,6 +350,14 @@ if ($_SESSION['logged_in'] != true) {
     <!-- pop up profile -->
     <?php include_once "components/admin/views/pop_historyAcc.view.php" ?>
     <!--end pop up profile -->
+
+    <!-- pop up qr code usd and khr -->
+    <?php include_once "components/admin/views/pop_qrUsdAndKhr.view.php" ?>
+    <!--end pop up qr code usd and khr -->
+
+    <!-- pop up scan qr code usd and khr -->
+    <?php include_once "components/admin/views/pop_ScanQrUsdAndKhr.view.php" ?>
+    <!--end pop up scan qr code usd and khr -->
 
 </main>
 
@@ -326,5 +378,8 @@ if ($_SESSION['logged_in'] != true) {
 
 <!-- script submit transfer data to db -->
 <script src="views/components/admin/js/SubmitPaymentMoney.js"></script>
+
+<!-- script pop qr dollar -->
+<script src="views/components/admin/js/PopupQrUsdAndKhr.js"></script>
 
 <?php require("views/components/footer.components.php") ?>

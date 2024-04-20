@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         setcookie("user_password", "", time() - 3600, '/');
                     }
                 }
-
                 echo "success";
             } else {
                 echo "false";
