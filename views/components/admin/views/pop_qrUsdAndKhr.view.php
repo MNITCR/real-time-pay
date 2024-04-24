@@ -11,7 +11,7 @@
             </button>
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                    K D M V , QR
+                    M N C R , QR
                 </h3>
 
                 <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-xl">
@@ -26,26 +26,25 @@
                     <div class="mb-2 bg-gray-600 rounded-bl-[10px] rounded-br-[10px] relative">
                         <div class="px-6 pt-2">
                             <p class="text-white text-lg" id="qr-user-full-name"></p>
-                            <p class="text-white text-lg hidden" id="qr-user-first-name"></p>
-                            <p class="text-white text-lg hidden" id="qr-user-last-name"></p>
-                            <p class="text-white text-lg hidden" id="qr-balance-usd"></p>
-                            <p class="text-white text-lg hidden" id="qr-balance-khr"></p>
-
                             <h2 class="text-white text-2xl font-bold"><span id="type-of-money"></span> <span id="value-of-money">0</span></h2>
                         </div>
                         <div class="text-gray-300 overflow-x-hidden text-nowrap text-center">. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</div>
                         <div class="px-6 pt-3 pb-4 flex items-center justify-center">
                             <img src="" id="image-qr-code-usd" alt="QRUSDANDKHR" srcset="">
+                            <p class="hidden" id="qr-user-last-name"></p>
                         </div>
                         <div class="absolute h-8 top-0 right-0" style="border-right: 40px solid rgb(185 28 28);;
                         border-left: 40px solid transparent;
                         border-bottom: 40px solid transparent;">
+                            <p class="hidden" id="qr-balance-usd"></p>
                         </div>
                     </div>
 
                     <!-- Top up money -->
                     <div class="mb-2 text-center w-full active:bg-gray-300/10 transition-all ease-in-out bg-gray-500/10 p-1 mt-2 text-cyan-500 rounded-md">
                         <p class="flex items-center justify-center flex-row gap-2 cursor-pointer"><i class="ri-add-circle-line text-[19px] mt-1"></i> Top up</p>
+                        <p class="hidden" id="qr-user-first-name"></p>
+                        <p id="user_id_scan_qr"></p>
                     </div>
 
                     <!-- send to -->
@@ -59,7 +58,9 @@
                         <div class="flex items-center justify-center flex-col">
                             <div id="download-qr-usd-khr" class="active:bg-gray-400/10 transition-all ease-in-out cursor-pointer mb-2 text-white bg-gray-600 w-[45px] h-[45px] flex items-center justify-center rounded-full">
                                 <i class="ri-download-2-line text-[18px]"></i>
+                                <p class="hidden" id="qr-balance-khr"></p>
                             </div>
+                            <p id='qr-token-usd-khr' class="hidden"></p>
                             <p class="text-white text-[14px]">Download</p>
                         </div>
 
@@ -68,17 +69,17 @@
                             <div id="screen-short-qr-usd-khr" class="active:bg-gray-400/10 transition-all ease-in-out cursor-pointer mb-2 text-white bg-gray-600 w-[45px] h-[45px] flex items-center justify-center rounded-full">
                                 <i class="ri-screenshot-fill text-[18px] mt-1"></i>
                             </div>
+                            <p class="hidden" id="qr-user-path-img"></p>
                             <p class="text-white text-[14px]">Screen Short</p>
                         </div>
 
-                        <!-- button send link -->
+                        <!-- button copy link -->
                         <div class="flex items-center justify-center flex-col">
                             <div id="send-link-qr-usd-khr" class="active:bg-gray-400/10 transition-all ease-in-out cursor-pointer mb-2 text-white bg-gray-600 w-[45px] h-[45px] flex items-center justify-center rounded-full">
                                 <i class="ri-link-m text-[18px]"></i>
                             </div>
-                            <p id='qr-token-usd-khr' class="hidden"></p>
                             <p id="qr-id-user-usd-khr" class="hidden"></p>
-                            <p class="text-white text-[14px]">Send link</p>
+                            <p class="text-white text-[14px]">Copy link</p>
                         </div>
                     </div>
                 </div>

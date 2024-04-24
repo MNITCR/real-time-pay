@@ -1,5 +1,15 @@
 # real-time-pay
 
+============> Create table store verify 4 password <============
+CREATE TABLE password_four_tbl(
+password_four_id INT PRIMARY KEY AUTO_INCREMENT,
+user_id int Not NULL,
+password_four int NOT NULL,
+created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+);
+============> End create table store verify 4 password <============
+
 ============> Create table user_tbl <============
 
 CREATE TABLE user_tbl (
@@ -26,8 +36,8 @@ account_id INT PRIMARY KEY AUTO_INCREMENT,
 user_id INT NOT NULL,
 account_number_eg VARCHAR(20) NOT NULL,
 account_number_kh VARCHAR(20) NOT NULL,
-balance_eg FLOAT NOT NULL,
-balance_kh FLOAT NOT NULL,
+balance_eg FLOAT(12,2) NOT NULL,
+balance_kh FLOAT(12,2) NOT NULL,
 created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 

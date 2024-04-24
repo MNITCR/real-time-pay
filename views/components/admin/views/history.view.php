@@ -130,7 +130,7 @@
                     <td class="px-4 border-b border-b-gray-50">
                         <div class="flex items-center">
                             <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded object-cover block">
-                            <span class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">${row.receiver}</span>
+                            <span class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 text-nowrap">${row.receiver}</span>
                         </div>
                     </td>
                     <td class="py-2 px-4 border-b border-b-gray-50">
@@ -143,7 +143,7 @@
                         <span class="text-[13px] font-medium text-gray-600">${row.description}</span>
                     </td>
                     <td class="py-2 px-4 border-b border-b-gray-50">
-                        <span class="text-[13px] font-medium text-gray-600">${row.payment_date}</span>
+                        <span class="text-[13px] font-medium text-gray-600 text-nowrap">${row.payment_date}</span>
                     </td>
                     <td class="py-2 px-4 border-b border-b-gray-50">
                         <span class="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">${row.status}</span>

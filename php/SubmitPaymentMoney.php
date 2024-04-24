@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response["message"] = "You can't transfer to your own account.";
         } else {
             // Find sender's account
-            $stmt = $conn->prepare("SELECT user_id, account_number_eg, account_number_kh, balance_eg, balance_kh FROM account_tbl WHERE user_id = ?");
+            $stmt = $conn->prepare("SELECT user_id, account_id, account_number_eg, account_number_kh, balance_eg, balance_kh FROM account_tbl WHERE user_id = ?");
             $stmt->execute([$user_id]);
             $sender = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -69,12 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         // Insert data to history table
                         $historyStmt = $conn->prepare("INSERT INTO history_accnum_tbl (user_id, account_number, user_name, history_accNum_date, created_at) VALUES (?, ?, ?, NOW(), NOW())");
                         $historyStmt->execute([$user_id, $accountNumber, $receiverFullName]);
-                        $lastInsertedHistoryId = $conn->lastInsertId(); // Get the last inserted ID
 
                         // Insert data to payment table
                         $status = "success"; // Assuming payment is successful
                         $paymentStmt = $conn->prepare("INSERT INTO payment_tbl (user_id, account_id, sender, receiver, account_number, description, amount, payment_date, status, balance_r_d) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)");
-                        $paymentStmt->execute([$user_id, $lastInsertedHistoryId, $senderFullName, $receiverFullName, $accountNumber, $description, $amount, $status, $senderBalanceColumn]);
+                        $paymentStmt->execute([$user_id, $sender["account_id"], $senderFullName, $receiverFullName, $accountNumber, $description, number_format($amount, 2, '.', ''), $status, $senderBalanceColumn]);
 
                         $response["message"] = "Payment submitted successfully.";
                     } else {

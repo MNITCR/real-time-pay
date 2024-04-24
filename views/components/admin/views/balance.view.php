@@ -153,46 +153,6 @@
 
         // ==========> Hide Amount <==========
 
-        // Function to encode balance with Base64 encoding
-        // function encodeBalance(balance) {
-        //     return btoa(balance); // Base64 encoding
-        // }
-        // // Initialize encoded balance values
-        // $("#balances_kh").data("balance", encodeBalance($("#balances_kh").text()));
-        // $("#balances_eg").data("balance", encodeBalance($("#balances_eg").text()));
-
-        // Hide balance values from inspector
-        $("#balances_kh").text("***");
-        $("#balances_eg").text("***");
-
-
-        // This is your original JavaScript code
-        // var originalCode = "alert('Hello, world!');";
-
-        // Encrypt the original code (simple example, not secure)
-        // function encrypt(code) {
-        //     var encryptedCode = "";
-        //     for (var i = 0; i < code.length; i++) {
-        //         encryptedCode += String.fromCharCode(code.charCodeAt(i) + 1);
-        //     }
-        //     return encryptedCode;
-        // }
-
-        // // Decrypt the encrypted code (to execute it)
-        // function decrypt(encryptedCode) {
-        //     var decryptedCode = "";
-        //     for (var i = 0; i < encryptedCode.length; i++) {
-        //         decryptedCode += String.fromCharCode(encryptedCode.charCodeAt(i) - 1);
-        //     }
-        //     return decryptedCode;
-        // }
-
-        // // Encrypt the original code
-        // var encryptedCode = encrypt(originalCode);
-
-        // // Execute the decrypted code
-        // console.log(eval(decrypt(encryptedCode)));
-
 
         // ==========> End Hide Amount <==========
 
@@ -204,17 +164,14 @@
                 url: "./php/FetchAccNumAndBalance.php",
                 dataType: "json",
                 success: function(data) {
-                    if (data[0]["balance_kh"] == 0) {
-                        $("#balances_kh").text(data[0]["balance_kh"] + ".00");
-                    } else {
-                        $("#balances_kh").text(formatBalance(data[0]["balance_kh"]));
-                    }
+                    // Format balance for Khmer currency
+                    var balance_kh = parseFloat(data[0]["balance_kh"]); // Convert balance_kh to a float
+                    $("#balances_kh").text(formatBalance(balance_kh));
 
-                    if (data[0]["balance_eg"] == 0) {
-                        $("#balances_eg").text(data[0]["balance_eg"] + ".00");
-                    } else {
-                        $("#balances_eg").text(formatBalance(data[0]["balance_eg"]));
-                    }
+                    // Format balance for English currency
+                    var balance_eg = parseFloat(data[0]["balance_eg"]); // Convert balance_eg to a float
+                    $("#balances_eg").text(formatBalance(balance_eg));
+
                     $("#account_number_kh_balance").text(data[0]["account_number_kh"]);
                     $("#account_number_eg_balance").text(data[0]["account_number_eg"]);
                 },
@@ -226,8 +183,27 @@
 
         // Function to format balance with proper separators
         function formatBalance(balance) {
-            // Remove decimal points and format with proper separators
-            return balance.toString().replace(/\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            if (isNaN(balance)) { // Check if balance is not a number
+                return "Invalid balance";
+            } else {
+                var formattedBalance = balance.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }); // Format balance with commas for thousands and two digits after the decimal point
+                return formattedBalance;
+                var balance_str = balance.toString(); // Convert balance to a string
+                if (balance_str.indexOf('.') === -1) { // Check if balance has a decimal point
+                    return balance.toFixed(2); // Append .00 if it doesn't have a decimal point
+                } else {
+                    var decimalIndex = balance_str.indexOf('.'); // Get the index of the decimal point
+                    var digitsAfterDecimal = balance_str.length - decimalIndex - 1; // Calculate the number of digits after the decimal point
+                    if (digitsAfterDecimal === 1) { // If there is only one digit after the decimal point
+                        return balance.toFixed(2); // Append a trailing zero
+                    } else {
+                        return balance_str; // Leave balance unchanged if it already has two or more digits after the decimal point
+                    }
+                }
+            }
         }
 
         updateBalance();

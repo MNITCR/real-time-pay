@@ -1,8 +1,6 @@
 $(document).ready(function () {
   var accountNumberTimer;
   var amountTimer;
-  // var getSelectedAccount =
-  //   $("#balance").find("option:selected").data("payment") === false;
 
   $("#balance").change(function () {
     var selectedOption = $(this).find("option:selected");
@@ -54,6 +52,7 @@ $(document).ready(function () {
   }
 
   function validateAmount() {
+    var amountStr = $("#amount").val().trim();
     var amount = parseFloat($("#amount").val());
     var balance = parseFloat($("#balance").val());
     var isKhmerBalance =
@@ -79,10 +78,23 @@ $(document).ready(function () {
       $("#amountER").text(amountError);
       return false;
     } else {
-      $("#amount").removeClass("border-red-500");
-      $("#amount").addClass("border-green-500");
-      $("#amountER").text("");
-      return true;
+      var decimalIndex = amountStr.indexOf("."); // Get the index of the decimal point
+      if (
+        decimalIndex !== -1 &&
+        amountStr.substring(decimalIndex + 1).length > 1
+      ) {
+        // Check if decimal part has more than 2 digits
+        amountError = "Decimal part cannot have more than 2 digits.";
+        $("#amount").addClass("border-red-500");
+        $("#amount").removeClass("border-green-500");
+        $("#amountER").text(amountError);
+        return false;
+      } else {
+        $("#amount").removeClass("border-red-500");
+        $("#amount").addClass("border-green-500");
+        $("#amountER").text("");
+        return true;
+      }
     }
   }
 
@@ -152,7 +164,9 @@ $(document).ready(function () {
           AccNumBL +=
             '<option value="' +
             AccNumBalance[0]["balance_eg"] +
-            '" data-payment="true"' + (urlParams.has('selected_kh') ? '' : 'selected') +'>' +
+            '" data-payment="true"' +
+            (urlParams.has("selected_kh") ? "" : "selected") +
+            ">" +
             AccNumBalance[0]["account_number_eg"] +
             " : $ " +
             AccNumBalance[0]["balance_eg"] +
@@ -161,7 +175,8 @@ $(document).ready(function () {
             '<option value="' +
             AccNumBalance[0]["balance_kh"] +
             '" data-payment="false"' +
-            (urlParams.has('selected_kh') ? 'selected' : '') + '>' +
+            (urlParams.has("selected_kh") ? "selected" : "") +
+            ">" +
             AccNumBalance[0]["account_number_kh"] +
             " : ៛ " +
             AccNumBalance[0]["balance_kh"] +
@@ -185,6 +200,14 @@ $(document).ready(function () {
     e.preventDefault();
     clearErrorMessage();
 
+    $(".HideConfirmFourPassword-modal").prop("id", "HideConfirmFourPasswords");
+    $(".btn-final-scan-qr").prop("id", "btn-final-qr");
+    // Change the ID of the button
+    $("#HideConfirmFourPasswords").click(function () {
+      $("#ConfirmFourPassword-modal").addClass("hidden");
+      $(".HideConfirmFourPassword-modal").prop("id", "");
+      $(".btn-final-scan-qr").prop("id", "");
+    });
     var accountNumber = $("#accountNumber").val();
     var amount = $("#amount").val();
     var description = $("#description").val();
@@ -205,20 +228,92 @@ $(document).ready(function () {
     var isBalanceValid = validateBalance();
 
     if (isAccountNumberValid && isAmountValid && isBalanceValid) {
-      $.ajax({
-        type: "POST",
-        url: "./php/SubmitPaymentMoney.php",
-        data: formData,
-        processData: false,
-        contentType: false,
-        dataType: "json",
-        success: function (response) {
-          FetchAccNumAndBalance();
-          alert(response.message);
-        },
-        error: function (xhr, status, error) {
-          console.error(xhr.responseText);
-        },
+      $("#ConfirmFourPassword-modal").removeClass("hidden");
+      $("#btn-final-qr").click(function () {
+        // Get all checked radio values
+        var checkedValues = [];
+
+        $('input[type="radio"]').each(function () {
+          if ($(this).is(":checked")) {
+            checkedValues.push($(this).val());
+          }
+        });
+
+        // Check if none of the radio inputs are checked
+        if (checkedValues.length !== 4) {
+          // Add tremble effect to the button
+          $("#ConfirmFourPassword-modal").addClass("tremble");
+
+          // Remove the tremble effect after 5 seconds
+          setTimeout(function () {
+            $("#ConfirmFourPassword-modal").removeClass("tremble");
+            $("#wrong-password-four").removeClass("-top-20");
+            $("#wrong-password-four").addClass("top-[-2px]");
+            $("#wrong-password-four-text").text("Please enter your password!");
+          }, 1000);
+
+          setTimeout(function () {
+            $("#wrong-password-four").addClass("-top-20");
+            $("#wrong-password-four").removeClass("top-[-2px]");
+          }, 3000);
+        } else {
+          var password = $("#inputDisplay").val();
+
+          var VerifyPassword = new FormData();
+          VerifyPassword.append("password", password);
+
+          $.ajax({
+            type: "POST",
+            url: "./php/VerifyPasswordPayment.php",
+            data: VerifyPassword,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (response) {
+              if (response.message === "error") {
+                // Add tremble effect to the button
+                $("#ConfirmFourPassword-modal").addClass("tremble");
+
+                // Remove the tremble effect after 5 seconds
+                setTimeout(function () {
+                  $("#ConfirmFourPassword-modal").removeClass("tremble");
+                  $("#wrong-password-four").removeClass("-top-20");
+                  $("#wrong-password-four").addClass("top-[-2px]");
+                  $("#wrong-password-four-text").text("Password not correct!");
+                }, 1000);
+
+                setTimeout(function () {
+                  $("#wrong-password-four").addClass("-top-20");
+                  $("#wrong-password-four").removeClass("top-[-2px]");
+                }, 3000);
+              } else {
+                $.ajax({
+                  type: "POST",
+                  url: "./php/SubmitPaymentMoney.php",
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  dataType: "json",
+                  success: function (response) {
+                    FetchAccNumAndBalance();
+                    alert(response.message);
+                    $('input[type="radio"]').prop("checked", false);
+                    $("#inputDisplay").val("");
+                    $("#ConfirmFourPassword-modal").addClass("hidden");
+                  },
+                  error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                  },
+                });
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error(xhr.responseText);
+            },
+          });
+          // Remove the tremble effect if previously added
+          $("#ConfirmFourPassword-modal").removeClass("tremble");
+        }
       });
     } else {
       alert("One or more fields are invalid");

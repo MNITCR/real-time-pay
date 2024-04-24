@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  // ==========> Create scan qr code usd <==========
   $("#PopUpQrEG").click(function () {
     $("#qrDollar-modal").removeClass("hidden");
     $("#ScanQrDollar-modal").addClass("hidden");
@@ -11,7 +12,7 @@ $(document).ready(function () {
           $("#qr-id-user-usd-khr").text(response[0]["user_id"]);
           $("#qr-user-first-name").text(response[0]["first_name"]);
           $("#qr-user-last-name").text(response[0]["last_name"]);
-
+          $("#qr-user-path-img").text(response[0]["image_path"]);
 
           var userData = response[0];
           var username =
@@ -58,8 +59,9 @@ $(document).ready(function () {
       },
     });
   });
+  // ==========> End create scan qr code usd <==========
 
-  // pop up khmer qr code
+  // ==========> Create scan qr code khmer <==========
   $("#PopUpQrKH").click(function () {
     $("#qrDollar-modal").removeClass("hidden");
     $("#ScanQrDollar-modal").addClass("hidden");
@@ -73,7 +75,7 @@ $(document).ready(function () {
           $("#qr-id-user-usd-khr").text(response[0]["user_id"]);
           $("#qr-user-first-name").text(response[0]["first_name"]);
           $("#qr-user-last-name").text(response[0]["last_name"]);
-
+          $("#qr-user-path-img").text(response[0]["image_path"]);
 
           var userData = response[0];
           var username =
@@ -120,22 +122,24 @@ $(document).ready(function () {
       },
     });
   });
+  // ==========> End create scan qr code khmer <==========
 
   // hide qr modal
   $("#HideQrDollar").click(function () {
     $("#qrDollar-modal").addClass("hidden");
   });
 
-  // Add a click event listener to the button
+  // ==========> Create copy link qr code <==========
   $("#send-link-qr-usd-khr").click(function () {
     var qrUrlData = {
-      user_id: $("#qr-id-user-usd-khr").text(),
-      sign_money: $("#qr-sign").text(),
-      first_name: $("#qr-user-first-name").text(),
-      last_name: $("#qr-user-last-name").text(),
-      balance_usd: $("#qr-balance-usd").text(),
-      balance_khr: $("#qr-balance-khr").text(),
-      token: $("#qr-token-usd-khr").text(),
+      k2Cvblrl2v3: $("#qr-id-user-usd-khr").text(),
+      jsbweiui235: $("#qr-sign").text(),
+      oi0oi34hsdf: $("#qr-user-first-name").text(),
+      kjhkfwro23v: $("#qr-user-last-name").text(),
+      mv23redefnv: $("#qr-balance-usd").text(),
+      kjswoirnv5v: $("#qr-balance-khr").text(),
+      loj232ovnje: $("#qr-token-usd-khr").text(),
+      jhy234nvskw: $("#qr-user-path-img").text(),
     };
 
     // Convert data to JSON string
@@ -151,7 +155,9 @@ $(document).ready(function () {
       $("#qr-number-of-balance").text() +
       "\n\n" +
       "Or click the link below to make a payment:\n" +
-      `http://localhost/real-time-pay?data=${encodeURIComponent(qrUrlDataString)}`;
+      `http://localhost/real-time-pay?data=${encodeURIComponent(
+        qrUrlDataString
+      )}`;
 
     console.log(message);
 
@@ -164,7 +170,6 @@ $(document).ready(function () {
       .catch(function (error) {
         console.error("Unable to copy message: ", error);
       });
-
-    // Check if the app is available, then open it, otherwise open a browser
   });
+  // ==========> End create copy link qr code <==========
 });

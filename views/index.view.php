@@ -287,35 +287,46 @@ if ($_SESSION['logged_in'] != true) {
         elseif ($dataParam = $_GET['data'] ?? null) {
             $decodedData = json_decode(urldecode($dataParam), true);
             $stmt = $conn->prepare("SELECT token,user_id FROM user_tbl WHERE token = ? AND user_id = ?");
-            $stmt->execute([$decodedData["token"], $decodedData["user_id"]]);
+            $stmt->execute([$decodedData["loj232ovnje"], $decodedData["k2Cvblrl2v3"]]);
             $user = $stmt->fetch();
 
             if ($user) {
+                $imgUrl = ltrim($decodedData["jhy234nvskw"], '.');
                 echo '
                 <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     $("#ScanQrDollar-modal").removeClass("hidden");
-                    var full_name_scan_user = "' . $decodedData["last_name"] . ' " + "' . $decodedData["first_name"] . '";
+                    $("#scan-qr-balance-value").val(0);
+
+                    $("#scan-qr-user-first-name").text("' . $decodedData["oi0oi34hsdf"] . ' ");
+                    $("#scan-qr-user-last-name").text("' . $decodedData["kjhkfwro23v"] . ' ");
+
+                    var full_name_scan_user = "' . $decodedData["kjhkfwro23v"] . ' " + "' . $decodedData["oi0oi34hsdf"] . '";
                     $("#scan-qr-code-usd-khr").text(full_name_scan_user);
-                    var check_usd_or_khr = "'. $decodedData["sign_money"].'";
-                    $("#last_name_one_character").text("' . $decodedData["last_name"][0] . '");
-                    $("#first_name_one_character").text("' . $decodedData["first_name"][0] . '");
+
+                    var check_usd_or_khr = "' . $decodedData["jsbweiui235"] . '";
+                    $("#last_name_one_character").text("' . $decodedData["kjhkfwro23v"][0] . '");
+                    $("#first_name_one_character").text("' . $decodedData["oi0oi34hsdf"][0] . '");
+                    $("#user_id_scan_qr").text("' . $decodedData["k2Cvblrl2v3"] . '");
+
+                    $("#scan-qr-profile").css({
+                        "background-image": "url(\'.' . $imgUrl . '\')",
+                        "background-position": "center",
+                        "background-repeat": "no-repeat",
+                        "background-size": "cover",
+                        "filter": "blur(1px)",
+                        "-webkit-filter": "blur(1px)"
+                    });
 
 
                     if (check_usd_or_khr == "KHR"){
                         $("#scan-qr-sign").text("KHR");
                         $("#main-scan-qr-sign").text("KHR");
-                        $("#scan-qr-number-of-balance").text("' . $decodedData["balance_khr"] . '".replace(
-                            /(\d)(?=(\d{3})+(?!\d))/g,
-                            "$1 "
-                          ));
+                        $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["kjswoirnv5v"] . '");
                     } else {
                         $("#main-scan-qr-sign").text("USD");
                         $("#scan-qr-sign").text("USD");
-                        $("#scan-qr-number-of-balance").text("' . $decodedData["balance_usd"] . '".replace(
-                            /(\d)(?=(\d{3})+(?!\d))/g,
-                            "$1 "
-                          ));
+                        $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["mv23redefnv"] . '");
                     }
                 });
                 </script>';
@@ -359,10 +370,12 @@ if ($_SESSION['logged_in'] != true) {
     <?php include_once "components/admin/views/pop_ScanQrUsdAndKhr.view.php" ?>
     <!--end pop up scan qr code usd and khr -->
 
-</main>
+    <!-- pop up confirm password 4 -->
+    <?php include_once "components/admin/views/pop_ConfirmFourPassword.view.php" ?>
+    <!-- end pop up confirm password 4 -->
 
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</main>
 
 
 <script src="views/components/admin/js/adminJs.js"></script>
@@ -379,7 +392,10 @@ if ($_SESSION['logged_in'] != true) {
 <!-- script submit transfer data to db -->
 <script src="views/components/admin/js/SubmitPaymentMoney.js"></script>
 
-<!-- script pop qr dollar -->
+<!-- script pop qr usd and khr -->
 <script src="views/components/admin/js/PopupQrUsdAndKhr.js"></script>
+
+<!-- script scan pop qr usd and khr -->
+<script src="views/components/admin/js/PopupScanQrUsdAndKhr.js"></script>
 
 <?php require("views/components/footer.components.php") ?>
