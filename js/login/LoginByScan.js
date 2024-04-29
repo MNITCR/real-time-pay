@@ -26,7 +26,7 @@ function load() {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.onload = function () {
       if (xhr.status === 200) {
-        console.log("Response from PHP:", xhr.responseText);
+        // console.log("Response from PHP:", xhr.responseText);
         const response = JSON.parse(xhr.responseText);
         console.log("Success:", response.success);
         console.log("Message:", response.message);

@@ -9,6 +9,6 @@ if ($stmt) {
     $DataQrUSD = $stmt->fetchAll(PDO::FETCH_ASSOC);
     header('Content-Type: application/json');
     echo json_encode($DataQrUSD);
-}else {
+} else {
     echo json_encode(array("error" => "Query failed"));
 }

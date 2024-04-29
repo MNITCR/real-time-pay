@@ -16,9 +16,9 @@
 
   <style>
     .styled-image {
-      --s: 50px; /* the size on the corner */
-      --t: 5px; /* the thickness of the border */
-      --g: 20px; /* the gap between the border and image */
+      --s: 40px; /* the size on the corner */
+      --t: 3px; /* the thickness of the border */
+      --g: 5px; /* the gap between the border and image */
 
       padding: calc(var(--g) + var(--t));
       outline: var(--t) solid gray; /* the color here */
@@ -28,9 +28,7 @@
         linear-gradient(#000 0 0) content-box;
       transition: 0.4s;
     }
-    .styled-image:hover {
-      outline-offset: calc(var(--g) / -1);
-    }
+
   </style>
 
   <body>
@@ -69,20 +67,7 @@
                 id="modalImage"
                 src="../../../../asset/uploads/ElonMusk.jpg"
                 alt=""
-                class="styled-image h-[200px] m-auto"
-                style="
-                  --s: 50px;
-                  --t: 5px;
-                  --g: 20px;
-                  padding: calc(var(--g) + var(--t));
-                  outline: var(--t) solid gray;
-                  outline-offset: calc(-1 * var(--t));
-                  mask: conic-gradient(at var(--s) var(--s), #0000 75%, #000 0)
-                      0 0 / calc(100% - var(--s)) calc(100% - var(--s)),
-                    linear-gradient(#000 0 0) content-box;
-                  transition: 0.4s;
-                "
-              />
+                class="styled-image h-[200px] m-auto"/>
 
               <h2 class="text-center text-lg font-medium mt-4 uppercase">
                 Elon Musk

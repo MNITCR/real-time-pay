@@ -19,13 +19,37 @@
     <!-- Include QRious library -->
     <!-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> -->
     <script src="./js/instascan-min.js"></script>
+
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script> -->
     <script src="./js/qrious-min.js"></script>
+
+
     <!-- <script src="https://cdn.jsdelivr.net/npm/qrious"></script> -->
     <script src="./js/qrious.js"></script>
+
+
     <!-- for excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+
+    <!-- QR JS Use In scan qr nav -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+
+    <!-- Download qr code -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
     <style>
         /* Vertical scrollbar */
         ::-webkit-scrollbar {

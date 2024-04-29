@@ -1,4 +1,39 @@
 <!-- pop up history account transfer -->
+<?php
+$dataParam = $_GET['data'] ?? null;
+
+if (isset($dataParam)) {
+    $decodedData = json_decode(urldecode($dataParam), true);
+    $stmt = $conn->prepare("SELECT token,user_id FROM user_tbl WHERE token = ? AND user_id = ?");
+    $stmt->execute([$decodedData["loj232ovnje"], $decodedData["k2Cvblrl2v3"]]);
+    $user = $stmt->fetch();
+
+    if ($user) {
+        $imgUrl = ltrim($decodedData["jhy234nvskw"], '.');
+
+        echo '
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var check_usd_or_khr = "' . (isset($decodedData["jsbweiui235"]) ? $decodedData["jsbweiui235"] : "") . '";
+
+                if (check_usd_or_khr === "KHR") {
+                    console.log(check_usd_or_khr);
+                    $("#scan-qr-sign").text("KHR");
+                    $("#main-scan-qr-sign").text("KHR");
+                    $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["kjswoirnv5v"] . '");
+                } else {
+                    $("#main-scan-qr-sign").text("USD");
+                    $("#scan-qr-sign").text("USD");
+                    $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["mv23redefnv"] . '");
+                }
+            });
+        </script>';
+    }
+}
+?>
+
+
+
 <div id="ScanQrDollar-modal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-sm">
         <!-- Modal content -->

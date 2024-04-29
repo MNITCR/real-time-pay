@@ -14,6 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST["description"];
     $checkBalance = $_POST["check"];
 
+    // var_dump($accountNumber);
+
 
     // Find receiver's account
     $stmt = $conn->prepare("SELECT user_id, account_number_eg, account_number_kh, balance_eg, balance_kh FROM account_tbl WHERE account_number_eg = ? OR account_number_kh = ?");
@@ -84,7 +86,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $response["message"] = "Invalid sender account.";
             }
         }
-    } else {
+    }
+    else {
         $response["message"] = "Invalid receiver account number.";
     }
 }

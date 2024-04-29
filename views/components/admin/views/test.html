@@ -13,13 +13,21 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <title>JavaScript Camera</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
   </head>
 
   <style>
-    img{
-      border-right: 2px ;
+    img {
+      border-right: 2px;
     }
-
   </style>
 
   <body>
@@ -30,7 +38,7 @@
       class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >
       <div
-        id="qrDollar-modal"
+        id="downlaod-qrcode-modal"
         class="relative sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-sm"
       >
         <!-- Modal content -->
@@ -99,58 +107,49 @@
         </div>
       </div>
       <button id="downloadButton" type="button">Download</button>
+
+      <script>
+        // Function to download the content of qrDollar-modal as PNG
+        function downloadContentAsPNG() {
+          // Select the modal content
+          const modalContent = document.getElementById("qrDollar-modal");
+
+          // Use html2canvas to capture the modal content as an image
+          html2canvas(modalContent).then((canvas) => {
+            // Get the canvas context
+            const ctx = canvas.getContext("2d");
+
+            // Draw border corners onto the canvas
+            const cornerSize = 50; // Adjust as needed
+            const cornerColor = "#000"; // Adjust as needed
+            ctx.fillStyle = cornerColor;
+            ctx.fillRect(0, 0, cornerSize, cornerSize);
+            ctx.fillRect(canvas.width - cornerSize, 0, cornerSize, cornerSize);
+            ctx.fillRect(0, canvas.height - cornerSize, cornerSize, cornerSize);
+            ctx.fillRect(
+              canvas.width - cornerSize,
+              canvas.height - cornerSize,
+              cornerSize,
+              cornerSize
+            );
+
+            // Convert the canvas to a data URL representing a PNG image
+            const dataURL = canvas.toDataURL("image/png");
+
+            // Create a temporary link element
+            const link = document.createElement("a");
+            link.href = dataURL;
+            link.download = "qrDollar-modal-content.png";
+
+            // Append the link to the body and trigger the click event
+            document.body.appendChild(link);
+            link.click();
+
+            // Remove the link from the body
+            document.body.removeChild(link);
+          });
+        }
+      </script>
     </div>
-
-    <script>
-      // Function to download the content of qrDollar-modal as PNG
-      function downloadContentAsPNG() {
-        // Select the modal content
-        const modalContent = document.getElementById("qrDollar-modal");
-
-        // Use html2canvas to capture the modal content as an image
-        html2canvas(modalContent).then((canvas) => {
-          // Get the canvas context
-          const ctx = canvas.getContext("2d");
-
-          // Draw border corners onto the canvas
-          const cornerSize = 50; // Adjust as needed
-          const cornerColor = "#000"; // Adjust as needed
-          ctx.fillStyle = cornerColor;
-          ctx.fillRect(0, 0, cornerSize, cornerSize);
-          ctx.fillRect(canvas.width - cornerSize, 0, cornerSize, cornerSize);
-          ctx.fillRect(0, canvas.height - cornerSize, cornerSize, cornerSize);
-          ctx.fillRect(
-            canvas.width - cornerSize,
-            canvas.height - cornerSize,
-            cornerSize,
-            cornerSize
-          );
-
-          // Convert the canvas to a data URL representing a PNG image
-          const dataURL = canvas.toDataURL("image/png");
-
-          // Create a temporary link element
-          const link = document.createElement("a");
-          link.href = dataURL;
-          link.download = "qrDollar-modal-content.png";
-
-          // Append the link to the body and trigger the click event
-          document.body.appendChild(link);
-          link.click();
-
-          // Remove the link from the body
-          document.body.removeChild(link);
-        });
-      }
-
-      // Event listener for the download button
-      document
-        .getElementById("downloadButton")
-        .addEventListener("click", downloadContentAsPNG);
-    </script>
   </body>
 </html>
-
-
-
-

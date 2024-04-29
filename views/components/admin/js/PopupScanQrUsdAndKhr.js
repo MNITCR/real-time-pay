@@ -35,7 +35,23 @@ $(document).ready(function () {
     // Remove commas from the string
     var mainValueWithoutCommas = mainValue.replace(/,/g, "");
 
-    if (checkUsdOrKhr === "KHR" && mainValueWithoutCommas < 10000) {
+    if (mainValueWithoutCommas < 0) {
+      // Add tremble effect to the button
+      $("#ConfirmFourPassword-modal").addClass("tremble");
+
+      // Remove the tremble effect after 1 seconds
+      setTimeout(function () {
+        $("#ConfirmFourPassword-modal").removeClass("tremble");
+        $("#wrong-password-four").removeClass("-top-20");
+        $("#wrong-password-four").addClass("top-[-2px]");
+        $("#wrong-password-four-text").text("Pleas input amount!");
+      }, 1000);
+
+      setTimeout(function () {
+        $("#wrong-password-four").addClass("-top-20");
+        $("#wrong-password-four").removeClass("top-[-2px]");
+      }, 3000);
+    } else if (checkUsdOrKhr === "KHR" && mainValueWithoutCommas < 10000) {
       // Add tremble effect to the button
       $("#ConfirmFourPassword-modal").addClass("tremble");
 
@@ -72,9 +88,9 @@ $(document).ready(function () {
       var currentData = $("#scan-qr-balance-value").val();
       var mainValueWithoutCommas = currentData.replace(/,/g, "");
 
-      if(mainValueWithoutCommas > storeDataFetch){
+      if (mainValueWithoutCommas > storeDataFetch) {
         return;
-      }else{
+      } else {
         $("#ConfirmFourPassword-modal").removeClass("hidden");
         $("#ScanQrDollar-modal").addClass("hidden");
       }
@@ -91,36 +107,6 @@ $(document).ready(function () {
 });
 
 // =============> Create validation on input balance <=============
-$.ajax({
-  url: "./php/FetchAccNumAndBalance.php", // PHP script URL
-  type: "GET",
-  dataType: "json",
-  success: function (data) {
-    var checkUsdOrKhr = $("#scan-qr-sign").text();
-    var storeDataFetch = $("#dataFetch-scan-ar");
-    if (checkUsdOrKhr === "KHR") {
-      storeDataFetch.val(data[0]["balance_kh"]);
-      $("#scan-qr-number-of-balance").text(data[0]["account_number_kh"].replace(
-        /(\d)(?=(\d{3})+(?!\d))/g,
-        "$1 "
-      ));
-      console.log(data[0]["balance_kh"]);
-      console.log("KHR");
-    } else {
-      storeDataFetch.val(data[0]["balance_eg"]);
-      $("#scan-qr-number-of-balance").text(data[0]["account_number_eg"].replace(
-        /(\d)(?=(\d{3})+(?!\d))/g,
-        "$1 "
-      ));
-      console.log(data[0]["balance_eg"]);
-      console.log("USD");
-    }
-  },
-  error: function (xhr, status, error) {
-    console.log(xhr.responseText);
-  },
-});
-
 const checkBalanceAndShowTooltip = (inputValue, balance) => {
   const tooltip = $("#tooltip-default");
   if (parseFloat(balance) < parseFloat(inputValue.replace(/,/g, ""))) {
@@ -242,226 +228,230 @@ $("#scan-qr-main-note .text-note-scan-qr").click(function () {
 });
 // ===============> end hide and show note and get value on p <===============
 
-
 // =============> Submit scan qr pay <=============
-$(document).ready(function() {
+$(document).ready(function () {
   var checkedValues = [];
 
   // Button final payment
-  $(document).on("click", "#confirm-password-four-final-pay", function() {
-      // Get all checked radio values
-      var checkedValues = [];
+  $(document).on("click", "#confirm-password-four-final-pay", function () {
+    // Get all checked radio values
+    var checkedValues = [];
 
-      $('input[type="radio"]').each(function() {
-          if ($(this).is(':checked')) {
-              checkedValues.push($(this).val());
-          }
-      });
+    $('input[type="radio"]').each(function () {
+      if ($(this).is(":checked")) {
+        checkedValues.push($(this).val());
+      }
+    });
 
-      // Check if none of the radio inputs are checked
-      if (checkedValues.length !== 4) {
-          console.log(checkedValues.length);
-          // Add tremble effect to the button
-          $("#ConfirmFourPassword-modal").addClass("tremble");
 
-          // Remove the tremble effect after 5 seconds
-          setTimeout(function() {
+    // Check if none of the radio inputs are checked
+    if (checkedValues.length !== 4) {
+      console.log(checkedValues.length);
+      // Add tremble effect to the button
+      $("#ConfirmFourPassword-modal").addClass("tremble");
+
+      // Remove the tremble effect after 5 seconds
+      setTimeout(function () {
+        $("#ConfirmFourPassword-modal").removeClass("tremble");
+        $(".wrong-password-four").removeClass("-top-20");
+        $(".wrong-password-four").addClass("top-[-2px]");
+        $(".wrong-password-four-text").text("Please enter your password!");
+      }, 1000);
+
+      setTimeout(function () {
+        $(".wrong-password-four").addClass("-top-20");
+        $(".wrong-password-four").removeClass("top-[-2px]");
+      }, 3000);
+    } else {
+      var password = $("#inputDisplay").val();
+
+      var VerifyPassword = new FormData();
+      VerifyPassword.append("password", password);
+
+      $.ajax({
+        type: "POST",
+        url: "./php/VerifyPasswordPayment.php",
+        data: VerifyPassword,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+          if (response.message === "error") {
+            // Add tremble effect to the button
+            $("#ConfirmFourPassword-modal").addClass("tremble");
+
+            // Remove the tremble effect after 5 seconds
+            setTimeout(function () {
               $("#ConfirmFourPassword-modal").removeClass("tremble");
               $(".wrong-password-four").removeClass("-top-20");
               $(".wrong-password-four").addClass("top-[-2px]");
-              $(".wrong-password-four-text").text("Please enter your password!");
-          }, 1000);
+              $(".wrong-password-four-text").text("Password not correct!");
+            }, 1000);
 
-          setTimeout(function() {
+            setTimeout(function () {
               $(".wrong-password-four").addClass("-top-20");
               $(".wrong-password-four").removeClass("top-[-2px]");
-          }, 3000);
+            }, 3000);
+          } else {
+            var signUsdOrKhr;
+            var amount = $("#scan-qr-balance-value").val();
+            var mainValueWithoutCommas = amount.replace(/,/g, "");
 
-      } else {
-          var password = $("#inputDisplay").val();
 
-          var VerifyPassword = new FormData();
-          VerifyPassword.append("password", password);
+            var receiveAccountNumber = $("#balance-scan-qr-khr-or-usd").text();
+            var RemoveSpacesReceiveAccountNumber = receiveAccountNumber.replace(
+              /\s/g,
+              ""
+            );
 
-          $.ajax({
+            var senderAccountNumber = $("#scan-qr-number-of-balance").text();
+            var RemoveSpacesSenderAccountNumber = senderAccountNumber.replace(
+              /\s/g,
+              ""
+            );
+
+            var checkUsdOrKhr = $("#scan-qr-sign").text();
+            var description = $("#scan-qr-input-note").val();
+            if (checkUsdOrKhr === "KHR") {
+              signUsdOrKhr = "false";
+            } else {
+              signUsdOrKhr = "true";
+            }
+
+            var formData = new FormData();
+            formData.append("accountNumber", RemoveSpacesReceiveAccountNumber);
+            formData.append("balance", RemoveSpacesSenderAccountNumber);
+            formData.append("amount", mainValueWithoutCommas);
+            formData.append("description", description);
+            formData.append("check", signUsdOrKhr);
+
+            console.log("Sender number: ", RemoveSpacesSenderAccountNumber);
+            console.log("Amount : ", mainValueWithoutCommas);
+            console.log("Receive number : ", RemoveSpacesReceiveAccountNumber);
+            console.log("Description :", description);
+            console.log("Sign :", signUsdOrKhr);
+
+            $.ajax({
               type: "POST",
-              url: "./php/VerifyPasswordPayment.php",
-              data: VerifyPassword,
+              url: "./php/SubmitPaymentMoney.php",
+              data: formData,
               processData: false,
               contentType: false,
               dataType: "json",
-              success: function(response) {
-                  if (response.message === "error") {
-                      // Add tremble effect to the button
-                      $("#ConfirmFourPassword-modal").addClass("tremble");
+              success: function (response) {
+                // FetchAccNumAndBalance();
+                if (
+                  response.message === "You can't transfer to your own account."
+                ) {
+                  // Add tremble effect to the button
+                  $("#ConfirmFourPassword-modal").addClass("tremble");
 
-                      // Remove the tremble effect after 5 seconds
-                      setTimeout(function() {
-                          $("#ConfirmFourPassword-modal").removeClass("tremble");
-                          $(".wrong-password-four").removeClass("-top-20");
-                          $(".wrong-password-four").addClass("top-[-2px]");
-                          $(".wrong-password-four-text").text("Password not correct!");
-                      }, 1000);
+                  // Remove the tremble effect after 5 seconds
+                  setTimeout(function () {
+                    $("#ConfirmFourPassword-modal").removeClass("tremble");
+                    $(".wrong-password-four").removeClass("-top-20");
+                    $(".wrong-password-four").addClass("top-[-2px]");
+                    $(".wrong-password-four-text").text(
+                      "Can't transfer to your own account!"
+                    );
+                  }, 1000);
 
-                      setTimeout(function() {
-                          $(".wrong-password-four").addClass("-top-20");
-                          $(".wrong-password-four").removeClass("top-[-2px]");
-                      }, 3000);
-                  } else {
-                      var signUsdOrKhr;
-                      var amount = $("#scan-qr-balance-value").val();
-                      var mainValueWithoutCommas = amount.replace(/,/g, "");
-
-                      // var user_name = $("#scan-qr-user-first-name").text() + $("#scan-qr-user-last-name").text();
-                      // var user_id = $("#user_id_scan_qr").text();
-                      var receiveAccountNumber = $("#balance-scan-qr-khr-or-usd").text();
-                      var senderAccountNumber = $("#scan-qr-number-of-balance").text();
-                      var RemoveSpacesSenderAccountNumber = senderAccountNumber.replace(/\s/g, "");
-
-
-                      var checkUsdOrKhr = $("#scan-qr-sign").text();
-                      var description = $("#scan-qr-input-note").val();
-                      if (checkUsdOrKhr === "KHR") {
-                          signUsdOrKhr = "false";
-                      } else {
-                          signUsdOrKhr = "true";
-                      }
-                      // checkUsdOrKhr === "KHR" ? signUsdOrKhr = "true" : signUsdOrKhr = "false";
-
-                      var formData = new FormData();
-                      formData.append("accountNumber", receiveAccountNumber);
-                      formData.append("balance", RemoveSpacesSenderAccountNumber);
-                      formData.append("amount", mainValueWithoutCommas);
-                      formData.append("description", description);
-                      formData.append("check", signUsdOrKhr);
-
-                      $.ajax({
-                          type: "POST",
-                          url: "./php/SubmitPaymentMoney.php",
-                          data: formData,
-                          processData: false,
-                          contentType: false,
-                          dataType: "json",
-                          success: function(response) {
-                              // FetchAccNumAndBalance();
-                              if (response.message === "You can't transfer to your own account.") {
-                                  // Add tremble effect to the button
-                                  $("#ConfirmFourPassword-modal").addClass("tremble");
-
-                                  // Remove the tremble effect after 5 seconds
-                                  setTimeout(function() {
-                                      $("#ConfirmFourPassword-modal").removeClass("tremble");
-                                      $(".wrong-password-four").removeClass("-top-20");
-                                      $(".wrong-password-four").addClass("top-[-2px]");
-                                      $(".wrong-password-four-text").text("Can't transfer to your own account!");
-                                  }, 1000);
-
-                                  setTimeout(function() {
-                                      $(".wrong-password-four").addClass("-top-20");
-                                      $(".wrong-password-four").removeClass("top-[-2px]");
-                                  }, 3000);
-
-
-                              } else {
-                                  $('input[type="radio"]').prop("checked", false);
-                                  $("#inputDisplay").val("");
-                                  // Remove the tremble effect if previously added
-                                  $("#ConfirmFourPassword-modal").removeClass("tremble");
-                                  alert(response.message);
-                              }
-
-
-                          },
-                          error: function(xhr, status, error) {
-                              console.error(xhr.responseText);
-                          },
-                      });
-
-
-                  }
+                  setTimeout(function () {
+                    $(".wrong-password-four").addClass("-top-20");
+                    $(".wrong-password-four").removeClass("top-[-2px]");
+                  }, 3000);
+                } else {
+                  $('input[type="radio"]').prop("checked", false);
+                  $("#inputDisplay").val("");
+                  // Remove the tremble effect if previously added
+                  $("#ConfirmFourPassword-modal").removeClass("tremble");
+                  alert(response.message);
+                }
               },
-              error: function(xhr, status, error) {
-                  console.error(xhr.responseText);
+              error: function (xhr, status, error) {
+                console.error(xhr.responseText);
               },
-          });
-
-
-      }
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        },
+      });
+    }
   });
 
   // Attach click event to number buttons
-  $('.number-button').click(function() {
-      var clickedValue = $(this).val();
+  $(".number-button").click(function () {
+    var clickedValue = $(this).val();
 
-      // Get the current value of the input display
-      var currentValue = $('#inputDisplay').val();
+    // Get the current value of the input display
+    var currentValue = $("#inputDisplay").val();
 
-      // Check if the length of the current value + clicked value is greater than 4
-      if (currentValue.length + clickedValue.length > 4) {
-          return; // Do nothing if length exceeds 4
-      } else {
-          // Update the value and display it
-          $('#inputDisplay').val(currentValue + clickedValue);
+    // Check if the length of the current value + clicked value is greater than 4
+    if (currentValue.length + clickedValue.length > 4) {
+      return; // Do nothing if length exceeds 4
+    } else {
+      // Update the value and display it
+      $("#inputDisplay").val(currentValue + clickedValue);
 
-          // Update the checked values
-          updateValueCheck(clickedValue);
-      }
+      // Update the checked values
+      updateValueCheck(clickedValue);
+    }
   });
 
   // Attach click event to radio inputs
-  $('input[type="radio"]').click(function(event) {
-      event.preventDefault();
-      updateCheckedValues();
+  $('input[type="radio"]').click(function (event) {
+    event.preventDefault();
+    updateCheckedValues();
   });
 
   function updateCheckedValues() {
-      checkedValues = [];
-      $('input[type="radio"]').each(function() {
-          if ($(this).is(':checked')) {
-              checkedValues.push($(this).val());
-          }
-      });
-
-      if (checkedValues.length === 4) {
-
+    checkedValues = [];
+    $('input[type="radio"]').each(function () {
+      if ($(this).is(":checked")) {
+        checkedValues.push($(this).val());
       }
+    });
+
+    if (checkedValues.length === 4) {
+    }
   }
 
   // Function to update value check
   function updateValueCheck(value) {
-      $('input[type="radio"]').each(function() {
-          if (!$(this).is(':checked')) {
-              $(this).prop('checked', true);
-              updateCheckedValues();
-              return false;
-          }
-      });
+    $('input[type="radio"]').each(function () {
+      if (!$(this).is(":checked")) {
+        $(this).prop("checked", true);
+        updateCheckedValues();
+        return false;
+      }
+    });
   }
 
   // Function to clear all checked values
   $(".clearAllValueCheck").click(() => {
-      $('input[type="radio"]').prop('checked', false);
-      $('#inputDisplay').val('');
-      checkedValues = [];
+    $('input[type="radio"]').prop("checked", false);
+    $("#inputDisplay").val("");
+    checkedValues = [];
   });
 
   // Clear radio values and input values
-  $(".clearBalanceValueOne").click(function() {
-      // Find the last checked radio button and uncheck it
-      var lastChecked = $('input[type="radio"]:checked:last');
-      lastChecked.prop('checked', false);
+  $(".clearBalanceValueOne").click(function () {
+    // Find the last checked radio button and uncheck it
+    var lastChecked = $('input[type="radio"]:checked:last');
+    lastChecked.prop("checked", false);
 
-      // Get the current value of the input
-      var currentValue = $('#inputDisplay').val();
+    // Get the current value of the input
+    var currentValue = $("#inputDisplay").val();
 
-      // Remove the last character from the value
-      var newValue = currentValue.slice(0, -1);
+    // Remove the last character from the value
+    var newValue = currentValue.slice(0, -1);
 
-      // Update the input value with the new value
-      $('#inputDisplay').val(newValue);
-      // Update the checked values array
-      updateCheckedValues();
+    // Update the input value with the new value
+    $("#inputDisplay").val(newValue);
+    // Update the checked values array
+    updateCheckedValues();
   });
-
 });
 // =============> End submit scan qr pay <=============

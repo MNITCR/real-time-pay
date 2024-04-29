@@ -201,27 +201,12 @@ if ($_SESSION['logged_in'] != true) {
                 </div>
             </li>
 
-            <!-- full screen -->
-            <button id="fullscreen-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="hover:bg-gray-100 rounded-full" viewBox="0 0 24 24" style="fill: gray;">
-                    <path d="M5 5h5V3H3v7h2zm5 14H5v-5H3v7h7zm11-5h-2v5h-5v2h7zm-2-4h2V3h-7v2h5z"></path>
+            <!-- scan qr button nav -->
+            <button id="scan-qr-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="hover:bg-gray-100 rounded-full" fill="currentColor" style="fill: gray;">
+                    <path d="M15 3H21V8H19V5H15V3ZM9 3V5H5V8H3V3H9ZM15 21V19H19V16H21V21H15ZM9 21H3V16H5V19H9V21ZM3 11H21V13H3V11Z"></path>
                 </svg>
             </button>
-            <script>
-                const fullscreenButton = document.getElementById('fullscreen-button');
-
-                fullscreenButton.addEventListener('click', toggleFullscreen);
-
-                function toggleFullscreen() {
-                    if (document.fullscreenElement) {
-                        // If already in fullscreen, exit fullscreen
-                        document.exitFullscreen();
-                    } else {
-                        // If not in fullscreen, request fullscreen
-                        document.documentElement.requestFullscreen();
-                    }
-                }
-            </script>
 
             <!-- profile -->
             <li class="dropdown ml-3">
@@ -318,8 +303,9 @@ if ($_SESSION['logged_in'] != true) {
                         "-webkit-filter": "blur(1px)"
                     });
 
-
-                    if (check_usd_or_khr == "KHR"){
+                    $("#balance-scan-qr-khr-or-usd").text("");
+                    if (check_usd_or_khr === "KHR"){
+                        console.log(check_usd_or_khr);
                         $("#scan-qr-sign").text("KHR");
                         $("#main-scan-qr-sign").text("KHR");
                         $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["kjswoirnv5v"] . '");
@@ -374,6 +360,9 @@ if ($_SESSION['logged_in'] != true) {
     <?php include_once "components/admin/views/pop_ConfirmFourPassword.view.php" ?>
     <!-- end pop up confirm password 4 -->
 
+    <!-- pop up form scan qr code nav -->
+    <?php include_once "components/admin/views/pop_ScanQrNav.view.php" ?>
+    <!-- end pop up form scan qr code nav -->
 
 </main>
 
@@ -397,5 +386,8 @@ if ($_SESSION['logged_in'] != true) {
 
 <!-- script scan pop qr usd and khr -->
 <script src="views/components/admin/js/PopupScanQrUsdAndKhr.js"></script>
+
+<!-- script scan pop qr in nav -->
+<script src="views/components/admin/js/PopupScanQrNav.js"></script>
 
 <?php require("views/components/footer.components.php") ?>

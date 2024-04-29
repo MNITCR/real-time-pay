@@ -247,14 +247,14 @@ $(document).ready(function () {
           // Remove the tremble effect after 5 seconds
           setTimeout(function () {
             $("#ConfirmFourPassword-modal").removeClass("tremble");
-            $("#wrong-password-four").removeClass("-top-20");
-            $("#wrong-password-four").addClass("top-[-2px]");
-            $("#wrong-password-four-text").text("Please enter your password!");
+            $(".wrong-password-four").removeClass("-top-20");
+            $(".wrong-password-four").addClass("top-[-2px]");
+            $(".wrong-password-four-text").text("Please enter your password!");
           }, 1000);
 
           setTimeout(function () {
-            $("#wrong-password-four").addClass("-top-20");
-            $("#wrong-password-four").removeClass("top-[-2px]");
+            $(".wrong-password-four").addClass("-top-20");
+            $(".wrong-password-four").removeClass("top-[-2px]");
           }, 3000);
         } else {
           var password = $("#inputDisplay").val();
@@ -277,14 +277,14 @@ $(document).ready(function () {
                 // Remove the tremble effect after 5 seconds
                 setTimeout(function () {
                   $("#ConfirmFourPassword-modal").removeClass("tremble");
-                  $("#wrong-password-four").removeClass("-top-20");
-                  $("#wrong-password-four").addClass("top-[-2px]");
-                  $("#wrong-password-four-text").text("Password not correct!");
+                  $(".wrong-password-four").removeClass("-top-20");
+                  $(".wrong-password-four").addClass("top-[-2px]");
+                  $(".wrong-password-four-text").text("Password not correct!");
                 }, 1000);
 
                 setTimeout(function () {
-                  $("#wrong-password-four").addClass("-top-20");
-                  $("#wrong-password-four").removeClass("top-[-2px]");
+                  $(".wrong-password-four").addClass("-top-20");
+                  $(".wrong-password-four").removeClass("top-[-2px]");
                 }, 3000);
               } else {
                 $.ajax({

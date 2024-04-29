@@ -125,16 +125,17 @@
                     const tr = document.createElement("tr");
 
                     var check = row["balance_r_d"] == "balance_kh" ? "៛" : "$";
+                    var image_path = row["image_path"].replace(".", "")
 
                     tr.innerHTML = `
                     <td class="px-4 border-b border-b-gray-50">
                         <div class="flex items-center">
-                            <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded object-cover block">
-                            <span class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 text-nowrap">${row.receiver}</span>
+                            <img src="${image_path}" alt="" class="w-8 h-8 rounded object-cover block blur-[.px]">
+                            <span class="text-gray-600 text-sm font-medium ml-2 text-nowrap">${row.receiver}</span>
                         </div>
                     </td>
                     <td class="py-2 px-4 border-b border-b-gray-50">
-                        <span class="text-gray-600 text-sm font-medium hover:text-blue-500">${row.sender}</span>
+                        <span class="text-gray-600 text-sm font-medium">${row.sender}</span>
                     </td>
                     <td class="py-2 px-4 border-b border-b-gray-50">
                         <span class="text-[13px] font-medium text-gray-600">${row.amount} ${" "} ${check}</span>
