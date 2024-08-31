@@ -1,7 +1,7 @@
 <!-- pop up history account transfer -->
 <?php
-$dataParam = $_GET['data'] ?? null;
-
+$dataParam = isset($_GET['data']) ? '' :null;
+// var_dump($decodedData["kjswoirnv5v"]);
 if (isset($dataParam)) {
     $decodedData = json_decode(urldecode($dataParam), true);
     $stmt = $conn->prepare("SELECT token,user_id FROM user_tbl WHERE token = ? AND user_id = ?");
@@ -9,8 +9,6 @@ if (isset($dataParam)) {
     $user = $stmt->fetch();
 
     if ($user) {
-        $imgUrl = ltrim($decodedData["jhy234nvskw"], '.');
-
         echo '
         <script>
             document.addEventListener("DOMContentLoaded", function() {

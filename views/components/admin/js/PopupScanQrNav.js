@@ -76,8 +76,8 @@ $(document).ready(function () {
                 );
 
                 if (code) {
-                  // alert("QR Code detected: " + code.data);
                   sendDataFromScanQRNav(code.data);
+                  console.log("QR Code detected: " + code.data);
                   // You can do something with the scanned data here
                 }
               }, 1000);
@@ -129,16 +129,12 @@ $(document).ready(function () {
             }
           }
 
-          var realAccountNumberUSD;
-          var realAccountNumberKHR;
-          var balance;
-          if(transformedData["qr-sign"] == "USD"){
-            realAccountNumberUSD = transformedData["account_number_eg"];
-            balance = transformedData["balance_eg"];
+          var realAccountNumberUSDOrKHR;
+          if (transformedData["qr-sign"] == "USD") {
+            realAccountNumberUSDOrKHR = transformedData["account_number_eg"];
             transformedData["qr-sign"] = "USD";
-          }else{
-            realAccountNumberKHR = transformedData["account_number_kh"];
-            balance = transformedData["balance_kh"];
+          } else {
+            realAccountNumberUSDOrKHR = transformedData["account_number_kh"];
             transformedData["qr-sign"] = "KHR";
           }
 
@@ -147,8 +143,7 @@ $(document).ready(function () {
             jsbweiui235: transformedData["qr-sign"],
             oi0oi34hsdf: transformedData["first_name"],
             kjhkfwro23v: transformedData["last_name"],
-            mv23redefnv: realAccountNumberUSD,
-            kjswoirnv5v: realAccountNumberKHR,
+            mv23redefnv: realAccountNumberUSDOrKHR,
             loj232ovnje: transformedData["token"],
             jhy234nvskw: transformedData["image_path"],
           };
@@ -159,10 +154,14 @@ $(document).ready(function () {
           // Encode the JSON string for URL
           var encodedDataString = encodeURIComponent(qrUrlDataString);
 
+          // var WIFIIPV4 = $("#ipV4WIFI").text();
+
           // Construct the URL with the encoded data
+          // var dataURL = `http://${WIFIIPV4}/real-time-pay?data=${encodedDataString}`;
           var dataURL = `http://localhost/real-time-pay?data=${encodedDataString}`;
 
           console.log(encodedDataString);
+          console.log(dataURL);
 
           setTimeout(function () {
             location.replace(dataURL);

@@ -1,59 +1,58 @@
 <?php
-// Change title page
-if ($_SERVER["REQUEST_URI"] === "/real-time-pay/") {
-    $title = "Dashboard";
-}
-if ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer" || "/real-time-pay/transfer?selected_kh=selected") {
-    $title = "Transfer";
-}
+    // Change title page
+    if ($_SERVER["REQUEST_URI"] === "/real-time-pay/") {
+        $title = "Dashboard";
+    }
+    if ($_SERVER["REQUEST_URI"] === "/real-time-pay/transfer" || "/real-time-pay/transfer?selected_kh=selected") {
+        $title = "Transfer";
+    }
 
-if (!session_id()) {
-    session_start();
-}
+    if (!session_id()) {
+        session_start();
+    }
 
-// Function to generate expiration date (30 days from now)
-function generateExpirationDate()
-{
-    return date('Y-m-d', strtotime('+30 days'));
-}
+    // Function to generate expiration date (30 days from now)
+    function generateExpirationDate()
+    {
+        return date('Y-m-d', strtotime('+30 days'));
+    }
 
-// Generate expiration date
-$tokenExp = generateExpirationDate();
+    // Generate expiration date
+    $tokenExp = generateExpirationDate();
 
-require_once("./php/conn.php");
+    require_once("./php/conn.php");
 
-if ($_SESSION["token"]) {
-    $tokenKey = $_SESSION["token"];
+    if ($_SESSION["token"]) {
+        $tokenKey = $_SESSION["token"];
 
-    $stmt = $conn->prepare("SELECT token,tokenExp FROM user_tbl WHERE token = ?");
-    $stmt->execute([$tokenKey]);
-    $user = $stmt->fetch();
+        $stmt = $conn->prepare("SELECT token,tokenExp FROM user_tbl WHERE token = ?");
+        $stmt->execute([$tokenKey]);
+        $user = $stmt->fetch();
 
-    $now = date('Y-m-d');
+        $now = date('Y-m-d');
 
-    if ($user["tokenExp"] == $now) {
-        $stmt = $conn->prepare("UPDATE user_tbl SET tokenExp = ? WHERE token = ?");
-        $stmt->execute([$tokenExp, $tokenKey]);
+        if ($user["tokenExp"] == $now) {
+            $stmt = $conn->prepare("UPDATE user_tbl SET tokenExp = ? WHERE token = ?");
+            $stmt->execute([$tokenExp, $tokenKey]);
+            echo "<script>
+                alert('Your token is expired!');
+                location.replace('login');
+            </script>";
+        }
+    } else {
         echo "<script>
-            alert('Your token is expired!');
+            alert('Your do't have token pleas login!');
             location.replace('login');
         </script>";
     }
-} else {
-    echo "<script>
-        alert('Your do't have token pleas login!');
-        location.replace('login');
-    </script>";
-}
 
-if ($_SESSION['logged_in'] != true) {
-    echo '
-    <script>
-    	alert("You don\'t have authorized to access data");
-    	location.replace("login");
-    </script>';
-}
-
+    if ($_SESSION['logged_in'] != true) {
+        echo '
+        <script>
+            alert("You don\'t have authorized to access data");
+            location.replace("login");
+        </script>';
+    }
 ?>
 
 
@@ -269,11 +268,14 @@ if ($_SESSION['logged_in'] != true) {
         // end payment form select khmer balance
 
         // scan payment by qr code
-        elseif ($dataParam = $_GET['data'] ?? null) {
+        elseif (strpos($_SERVER["REQUEST_URI"], "/real-time-pay/") === 0 && isset($_GET['data'])) {
+        // elseif ($_SERVER["REQUEST_URI"] === "/real-time-pay/?data=") {
+            $dataParam = $_GET['data'];
             $decodedData = json_decode(urldecode($dataParam), true);
             $stmt = $conn->prepare("SELECT token,user_id FROM user_tbl WHERE token = ? AND user_id = ?");
             $stmt->execute([$decodedData["loj232ovnje"], $decodedData["k2Cvblrl2v3"]]);
             $user = $stmt->fetch();
+
 
             if ($user) {
                 $imgUrl = ltrim($decodedData["jhy234nvskw"], '.');
@@ -308,7 +310,7 @@ if ($_SESSION['logged_in'] != true) {
                         console.log(check_usd_or_khr);
                         $("#scan-qr-sign").text("KHR");
                         $("#main-scan-qr-sign").text("KHR");
-                        $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["kjswoirnv5v"] . '");
+                        $("#balance-scan-qr-khr-or-usd").text("' . $decodedData["mv23redefnv"] . '");
                     } else {
                         $("#main-scan-qr-sign").text("USD");
                         $("#scan-qr-sign").text("USD");
@@ -319,11 +321,6 @@ if ($_SESSION['logged_in'] != true) {
                 include_once 'components/admin/views/balance.view.php';
                 include_once 'components/admin/views/history.view.php';
             }
-            // Page not found
-            else {
-                include_once '404.view.php';
-            }
-            // End page not found
         }
         // scan payment by qr code
 

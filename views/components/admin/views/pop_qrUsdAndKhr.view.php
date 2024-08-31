@@ -1,5 +1,5 @@
 <!-- pop up history account transfer -->
-<div id="qrDollar-modal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="qrDollar-modal" tabindex="-1" aria-hidden="false" class="hidden fixed top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-sm">
         <!-- Modal content -->
         <div class="relative bg-gray-700 rounded-lg shadow dark:bg-gray-700">
@@ -145,7 +145,7 @@
 
 
 <script>
-    // sree shot image qr code
+    // Screenshot image qr code
     document.getElementById('screen-short-qr-usd-khr').addEventListener('click', function() {
         // Select the HTML elements
         const element = document.getElementById('screenshot-container');
@@ -157,8 +157,8 @@
         tooltip.classList.add("opacity-1");
 
         setTimeout(() => {
-          tooltip.classList.remove("opacity-1");
-          tooltip.classList.add("opacity-0");
+            tooltip.classList.remove("opacity-1");
+            tooltip.classList.add("opacity-0");
         }, 2000);
 
         h2.style.position = "relative";
@@ -167,10 +167,6 @@
         // Use html2canvas to capture the element with specified styles
         html2canvas(element).then(function(canvas) {
             const imageDataURL = canvas.toDataURL();
-            const screenshotImage = new Image();
-            screenshotImage.src = imageDataURL;
-            document.body.appendChild(screenshotImage);
-
             const downloadLink = document.createElement('a');
             downloadLink.href = imageDataURL;
             downloadLink.download = 'MNIT_SCREENSHOT_QR.png';
@@ -180,9 +176,6 @@
         h2.style.position = "";
         h2.style.top = "";
     });
-
-
-
 
     // download image qr code
     const buttonDownload = document.getElementById("download-qr-usd-khr");

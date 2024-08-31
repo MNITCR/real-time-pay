@@ -5,11 +5,11 @@ $(document).ready(function () {
     profile.removeClass("hidden");
 
     $.ajax({
-      url: "./php/getqrcodeurl.php",
+      url: "./php/FetchAccUser.php",
       method: "GET",
       success: function (response) {
-        var qrcode = response;
-        var decodedJsonData = decodeURIComponent(qrcode);
+        var data = response;
+        var decodedJsonData = decodeURIComponent(data[0]['qrcode']);
         var jsonData = JSON.parse(decodedJsonData);
 
         // Convert JSON data to string
@@ -21,6 +21,11 @@ $(document).ready(function () {
           value: jsonString,
           size: 250, // Adjust the size of the QR code as needed
         });
+        $('#first_name').val(data[0]['first_name']);
+        $('#last_name').val(data[0]['last_name']);
+        $('#phone').val(data[0]['phone']);
+        $('#email').val(data[0]['email']);
+
       },
       error: function (xhr, status, error) {
         console.log(xhr, status, error);

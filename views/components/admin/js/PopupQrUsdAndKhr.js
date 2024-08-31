@@ -30,6 +30,24 @@ $(document).ready(function () {
     $("#ScanQrDollar-modal").addClass("hidden");
     $("#main-download-qrcode-modal").removeClass("hidden");
 
+    // get ipv4 WIFI
+    $.ajax({
+      url: "./php/getIPV4WIFI.php",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        if (data.success) {
+          $("#ipV4WIFI").text(data.success);
+        } else {
+          alert(data.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.log(xhr.responseText);
+      },
+    });
+
+
     $.ajax({
       url: "./php/FetchAccNameAndBalance.php",
       method: "GET",
@@ -100,6 +118,14 @@ $(document).ready(function () {
         console.error("Error:", error);
       },
     });
+  });
+  // ==========> End create scan qr code usd <==========
+
+  // ==========> Create scan qr code khmer <==========
+  $("#PopUpQrKH").click(function () {
+    $("#qrDollar-modal").removeClass("hidden");
+    $("#ScanQrDollar-modal").addClass("hidden");
+    $("#main-download-qrcode-modal").removeClass("hidden");
 
     // get ipv4 WIFI
     $.ajax({
@@ -117,15 +143,8 @@ $(document).ready(function () {
         console.log(xhr.responseText);
       },
     });
-  });
-  // ==========> End create scan qr code usd <==========
 
-  // ==========> Create scan qr code khmer <==========
-  $("#PopUpQrKH").click(function () {
-    $("#qrDollar-modal").removeClass("hidden");
-    $("#ScanQrDollar-modal").addClass("hidden");
-    $("#main-download-qrcode-modal").removeClass("hidden");
-
+    
     $.ajax({
       url: "./php/FetchAccNameAndBalance.php",
       method: "GET",
@@ -193,23 +212,6 @@ $(document).ready(function () {
       },
       error: function (xhr, status, error) {
         console.error("Error:", error);
-      },
-    });
-
-    // get ipv4 WIFI
-    $.ajax({
-      url: "./php/getIPV4WIFI.php",
-      type: "GET",
-      dataType: "json",
-      success: function (data) {
-        if (data.success) {
-          $("#ipV4WIFI").text(data.success);
-        } else {
-          alert(data.message);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.log(xhr.responseText);
       },
     });
   });

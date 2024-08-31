@@ -541,7 +541,13 @@ document.addEventListener("DOMContentLoaded", function () {
   confirmPasswordInput.addEventListener("input", validateConfirmPassword);
 
   // ===================> BTN SING UP <==================
-  const btnSignUp = document.getElementById("submit_signup");
+  var btnName = "";
+  if(document.getElementById("submit_signup") != null){
+    btnName = "submit_signup";
+  }else{
+    btnName = "update_profile_user";
+  }
+  const btnSignUp = document.getElementById(btnName);
   const messageAlert = document.getElementById("text-success");
   btnSignUp.addEventListener("click", function (e) {
     e.preventDefault(); // Prevent the default form submission

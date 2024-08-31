@@ -98,6 +98,7 @@
                     // Calculate total current page
                     totalCurrentPage = Math.ceil(totalItems / itemsPerPage);
                     displayData();
+
                 });
         }
 
@@ -125,7 +126,14 @@
                     const tr = document.createElement("tr");
 
                     var check = row["balance_r_d"] == "balance_kh" ? "៛" : "$";
-                    var image_path = row["image_path"].replace(".", "")
+                    var image_path;
+                    
+                    if(typeof row["image_path"] == "string"){
+                        image_path = row["image_path"].replace("../", "");
+                    }else{
+                        image_path = "";
+                    }
+
 
                     tr.innerHTML = `
                     <td class="px-4 border-b border-b-gray-50">

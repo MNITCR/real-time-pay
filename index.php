@@ -3,7 +3,7 @@
 require 'function.php';
 
 // Get the path without the query string
-$uri = parse_url($_SERVER["REQUEST_URI"])['path'];
+$uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 // Map the paths routes
 $routes = require 'routes.php';
@@ -15,7 +15,7 @@ if (array_key_exists($uri, $routes)) {
     abort();
 }
 
-function abort($code = 404){
+function abort($code = 404) {
     http_response_code($code);
     $title = "Not Found";
     require 'views/404.view.php';

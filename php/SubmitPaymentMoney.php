@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $senderFullName = $senderName['first_name'] . ' ' . $senderName['last_name'];
 
                         // Get receiver's full name
-                        $receiverNameStmt = $conn->prepare("SELECT first_name, last_name FROM user_tbl WHERE user_id = ?");
+                        $receiverNameStmt = $conn->prepare("SELECT first_name, last_name,image_path FROM user_tbl WHERE user_id = ?");
                         $receiverNameStmt->execute([$receiver["user_id"]]);
                         $receiverName = $receiverNameStmt->fetch(PDO::FETCH_ASSOC);
                         $receiverFullName = $receiverName['first_name'] . ' ' . $receiverName['last_name'];
@@ -74,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         // Insert data to payment table
                         $status = "success"; // Assuming payment is successful
-                        $paymentStmt = $conn->prepare("INSERT INTO payment_tbl (user_id, account_id, sender, receiver, account_number, description, amount, payment_date, status, balance_r_d) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)");
-                        $paymentStmt->execute([$user_id, $sender["account_id"], $senderFullName, $receiverFullName, $accountNumber, $description, number_format($amount, 2, '.', ''), $status, $senderBalanceColumn]);
+                        $paymentStmt = $conn->prepare("INSERT INTO payment_tbl (user_id, account_id, sender, receiver, account_number, description, amount, payment_date, status, balance_r_d, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?,?)");
+                        $paymentStmt->execute([$user_id, $sender["account_id"], $senderFullName, $receiverFullName, $accountNumber, $description, number_format($amount, 2, '.', ''), $status, $senderBalanceColumn,$receiverName["image_path"]]);
 
                         $response["message"] = "Payment submitted successfully.";
                     } else {

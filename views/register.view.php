@@ -28,7 +28,6 @@
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm lg:max-w-lg">
         <form id="registration-form" method="post" enctype="multipart/form-data">
             <div class="grid gap-6 md:grid-cols-2 mb-6">
-
                 <!-- input first name -->
                 <div>
                     <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
